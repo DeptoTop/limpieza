@@ -133,46 +133,100 @@
     border: 2px solid var(--gris-borde);
   }
 
-  /* ===== GRID DE REGLAS (2x2) ===== */
-.rule-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
-  gap: 15px; /* Espacio entre tarjetas */
-  margin-bottom: 15px;
-}
-
-/* Ajustes para que las tarjetas dentro del grid sean más compactas */
-.rule-grid .rule-card {
-  margin-bottom: 0;
-  padding: 18px;
-}
-
-.rule-grid .rule-card .rule-icon {
-  font-size: 32px; /* Icono ligeramente más pequeño para ahorrar espacio */
-}
-
-.rule-grid .rule-card h3 {
-  font-size: 19px; /* Título compacto pero legible */
-  margin-bottom: 6px;
-}
-
-.rule-grid .rule-card p {
-  font-size: 16px; /* Texto base legible para Andrea */
-  margin-bottom: 0;
-  line-height: 1.4;
-}
-
-/* RESPONSIVE: En móviles, volver a 1 columna para máxima legibilidad */
-@media (max-width: 600px) {
-  .rule-grid {
-    grid-template-columns: 1fr; /* 1 sola columna en pantallas pequeñas */
-    gap: 12px;
+  /* ===== CARDS DE REGLAS ===== */
+  .rule-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--sombra);
+    border-left: 6px solid var(--naranja);
   }
-  
-  .rule-grid .rule-card {
-    padding: 15px;
+  .rule-card .rule-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
   }
-}
+  .rule-card h3 {
+    color: var(--azul-oscuro);
+    margin-bottom: 8px;
+  }
+
+  /* ===== PASOS ===== */
+  .step-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
+    border-top: 5px solid var(--azul);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .step-number {
+    background: var(--azul);
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--azul-oscuro);
+    flex: 1;
+    min-width: 200px;
+  }
+  .step-time {
+    background: var(--naranja);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .step-tip {
+    background: #FFF3CD;
+    border-left: 4px solid #FFC107;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 17px;
+  }
+  .step-tip strong { color: #856404; }
+  .step-tasks {
+    list-style: none;
+    margin-top: 15px;
+  }
+  .step-tasks li {
+    padding: 12px 15px 12px 45px;
+    margin-bottom: 8px;
+    background: var(--gris-claro);
+    border-radius: 8px;
+    position: relative;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .step-tasks li::before {
+    content: "✓";
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    color: var(--verde);
+    font-weight: bold;
+    font-size: 22px;
+  }
 
   /* ===== CHECKLIST ===== */
   .checklist-box {
@@ -443,22 +497,41 @@
 
   <!-- ===== 1. REGLAS DE ORO ===== -->
   <section id="reglas">
-  <div class="section-title">
-    <span class="icon">⭐</span>
-    <h2>1. Reglas de Oro del Aseo</h2>
-  </div>
+    <div class="section-title">
+      <span class="icon">⭐</span>
+      <h2>1. Reglas de Oro del Aseo</h2>
+    </div>
 
-  <!-- NUEVO CONTENEDOR GRID PARA LAS 4 PRIMERAS REGLAS -->
-  <div class="rule-grid">
-    <div class="rule-card"> <!-- Cero rastro... --> </div>
-    <div class="rule-card"> <!-- Detalles "invisibles"... --> </div>
-    <div class="rule-card"> <!-- Evidencia visual... --> </div>
-    <div class="rule-card"> <!-- Todo limpio... --> </div>
-  </div>
-  <!-- FIN DEL CONTENEDOR GRID -->
-  
-  <div class="rule-card"> <!-- Pregunte antes de improvisar... --> </div>
-</section>
+    <div class="rule-card">
+      <div class="rule-icon">🚫</div>
+      <h3>Cero rastro del huésped anterior</h3>
+      <p>Ni un pelo, ni una miga, ni olor a encierro ni a comida acumulada. La vivienda debe sentirse totalmente nueva.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🔍</div>
+      <h3>Detalles "invisibles" impecables</h3>
+      <p>Levantar el desagüe de la ducha, control remoto libre de polvo, ventanales transparentes para la vista al estadio.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">📸</div>
+      <h3>Evidencia visual obligatoria</h3>
+      <p>Al terminar, envíe <strong>5 fotos clave + un video corto</strong> al grupo de WhatsApp antes de cerrar y salir.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">✨</div>
+      <h3>Todo limpio y repuesto</h3>
+      <p>Todo lo que usó el huésped anterior debe quedar limpio, repuesto y en su lugar correspondiente, listo para el nuevo cliente.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">❓</div>
+      <h3>Pregunte antes de improvisar</h3>
+      <p>Ante cualquier duda, consulte directamente al administrador antes de tomar decisiones apresuradas.</p>
+    </div>
+  </section>
 
   <!-- ===== 2. INSUMOS ===== -->
   <section id="insumos">
@@ -872,3 +945,4 @@
 
 </body>
 </html>
+
