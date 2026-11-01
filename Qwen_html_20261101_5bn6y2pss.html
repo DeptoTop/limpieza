@@ -454,13 +454,11 @@
   body.text-large h2 { font-size: 32px; }
   body.text-large h3 { font-size: 26px; }
   body.text-large p, body.text-large li { font-size: 22px; }
-  body.text-large .timer-display { font-size: 64px; }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 600px) {
     h1 { font-size: 26px; }
     h2 { font-size: 24px; }
-    .timer-display { font-size: 44px; }
     .step-header { flex-direction: column; align-items: flex-start; }
     .nav-item { min-width: 65px; font-size: 12px; }
     .nav-item .icon { font-size: 24px; }
@@ -468,7 +466,7 @@
 
   /* ===== IMPRESIÓN ===== */
   @media print {
-    .nav-sticky, .floating-buttons, .timer-box, button, .no-print { display: none !important; }
+    .nav-sticky, .floating-buttons, button, .no-print { display: none !important; }
     body { background: white; font-size: 14px; padding: 0; }
     .container { max-width: 100%; padding: 0; }
     .step-card, .checklist-box, .rule-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
@@ -496,18 +494,6 @@
 </nav>
 
 <div class="container">
-
-  <!-- ===== CRONÓMETRO ===== -->
-  <div class="timer-box">
-    <div class="label">⏱️ CRONÓMETRO DE TURNOVER</div>
-    <div class="timer-display" id="timerDisplay">00:00:00</div>
-    <div class="timer-info">Horario estándar: 10:00 a 14:00 hrs · Duración: 90 a 180 min</div>
-    <div class="timer-buttons">
-      <button class="btn btn-primary" onclick="iniciarTimer()">▶️ Iniciar</button>
-      <button class="btn btn-secondary" onclick="pausarTimer()">⏸️ Pausar</button>
-      <button class="btn btn-danger" onclick="reiniciarTimer()">🔄 Reiniciar</button>
-    </div>
-  </div>
 
   <!-- ===== 1. REGLAS DE ORO ===== -->
   <section id="reglas">
@@ -901,40 +887,6 @@
 </div>
 
 <script>
-  // ===== CRONÓMETRO =====
-  let tiempo = 0;
-  let intervalo = null;
-  let corriendo = false;
-
-  function iniciarTimer() {
-    if (!corriendo) {
-      corriendo = true;
-      intervalo = setInterval(() => {
-        tiempo++;
-        actualizarDisplay();
-      }, 1000);
-    }
-  }
-
-  function pausarTimer() {
-    corriendo = false;
-    clearInterval(intervalo);
-  }
-
-  function reiniciarTimer() {
-    pausarTimer();
-    tiempo = 0;
-    actualizarDisplay();
-  }
-
-  function actualizarDisplay() {
-    const h = Math.floor(tiempo / 3600);
-    const m = Math.floor((tiempo % 3600) / 60);
-    const s = tiempo % 60;
-    document.getElementById('timerDisplay').textContent =
-      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-  }
-
   // ===== CHECKLIST =====
   function toggleCheck(item) {
     const checkbox = item.querySelector('input[type="checkbox"]');
