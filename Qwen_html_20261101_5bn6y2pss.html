@@ -506,6 +506,44 @@
       grid-template-columns: 1fr;
     }
   }
+    /* ===== GRID DE INCIDENCIAS (1x3) ===== */
+  .incident-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
+    gap: 15px; /* Espacio entre tarjetas */
+  }
+
+  /* Ajustes para que las tarjetas encajen bien en columnas estrechas */
+  .incident-grid .incident-card {
+    margin-bottom: 0; /* Quitamos el margen inferior que tenían */
+    padding: 18px;
+  }
+
+  .incident-grid .incident-card h3 {
+    font-size: 19px; /* Título un poco más compacto */
+    margin-bottom: 10px;
+  }
+
+  .incident-grid .incident-card p {
+    font-size: 16px; /* Texto legible pero más compacto */
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  /* RESPONSIVE: En tablets vuelve a 2 columnas */
+  @media (max-width: 900px) and (min-width: 601px) {
+    .incident-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* RESPONSIVE: En móviles vuelve a 1 columna para máxima legibilidad */
+  @media (max-width: 600px) {
+    .incident-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -825,12 +863,14 @@
   </section>
 
   <!-- ===== 6. INCIDENCIAS ===== -->
-  <section id="incidencias">
-    <div class="section-title">
-      <span class="icon">⚠️</span>
-      <h2>6. Protocolo ante Incidencias</h2>
-    </div>
+<section id="incidencias">
+  <div class="section-title">
+    <span class="icon">⚠️</span>
+    <h2>6. Protocolo ante Incidencias</h2>
+  </div>
 
+  <!-- 👇 NUEVO CONTENEDOR GRID 1x3 -->
+  <div class="incident-grid">
     <div class="incident-card">
       <h3>🔨 Daños o Faltantes</h3>
       <p>Sacar foto de inmediato y reportar al administrador <strong>antes</strong> de reparar o limpiar la zona afectada para mantener el registro visual del estado original.</p>
@@ -845,8 +885,9 @@
       <h3>📦 Falla o Stock Bajo</h3>
       <p>Reportar cuando quede menos de 1 semana de stock de productos de aseo, amenities o consumibles para efectuar compras masivas a bajo costo.</p>
     </div>
-  </section>
-
+  </div>
+  <!-- 👆 FIN DEL GRID -->
+</section>
   <!-- ===== 7. IMPRIMIBLE ===== -->
   <section id="imprimible">
     <div class="section-title">
