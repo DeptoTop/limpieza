@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Limpieza DeptoTop - Andrea</title>
+<style>
+  /* ===== RESET Y BASE ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --azul: #0066CC;
+    --azul-oscuro: #004999;
+    --verde: #28A745;
+    --rojo: #DC3545;
+    --naranja: #FF6B35;
+    --gris-claro: #F8F9FA;
+    --gris-borde: #DEE2E6;
+    --texto: #212529;
+    --texto-suave: #495057;
+    --blanco: #FFFFFF;
+    --sombra: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Arial', 'Helvetica', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--texto);
+    background: var(--gris-claro);
+    padding-bottom: 120px;
+  }
+
+  /* ===== TIPOGRAFÍA ===== */
+  h1 { font-size: 32px; font-weight: bold; margin-bottom: 10px; }
+  h2 { font-size: 28px; font-weight: bold; margin: 30px 0 15px; color: var(--azul-oscuro); }
+  h3 { font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+  p, li { font-size: 18px; margin-bottom: 10px; }
+
+  /* ===== HEADER ===== */
+  .header {
+    background: linear-gradient(135deg, var(--azul), var(--azul-oscuro));
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: var(--sombra);
+  }
+  .header h1 { color: white; }
+  .header .direccion {
+    font-size: 16px;
+    opacity: 0.95;
+    margin-top: 8px;
+  }
+
+  /* ===== NAV STICKY ===== */
+  .nav-sticky {
+    position: sticky;
+    top: 0;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    z-index: 100;
+    overflow-x: auto;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--texto);
+    padding: 8px 12px;
+    border-radius: 10px;
+    min-width: 80px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+  .nav-item:hover, .nav-item:active {
+    background: var(--gris-claro);
+  }
+  .nav-item .icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+  }
+
+  /* ===== CONTENEDOR ===== */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 15px;
+  }
+
+  /* ===== CRONÓMETRO ===== */
+  .timer-box {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: var(--sombra);
+    margin-bottom: 25px;
+    border: 3px solid var(--azul);
+  }
+  .timer-box .label {
+    font-size: 16px;
+    color: var(--texto-suave);
+    margin-bottom: 8px;
+  }
+  .timer-display {
+    font-size: 56px;
+    font-weight: bold;
+    color: var(--azul-oscuro);
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    margin: 10px 0;
+  }
+  .timer-info {
+    font-size: 16px;
+    color: var(--texto-suave);
+    margin-bottom: 15px;
+  }
+  .timer-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ===== BOTONES ===== */
+  button, .btn {
+    min-height: 50px;
+    padding: 15px 25px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--azul);
+    color: white;
+  }
+  .btn-primary:hover, .btn-primary:active {
+    background: var(--azul-oscuro);
+    transform: scale(1.02);
+  }
+  .btn-success {
+    background: var(--verde);
+    color: white;
+  }
+  .btn-success:hover, .btn-success:active {
+    background: #1e7e34;
+  }
+  .btn-danger {
+    background: var(--rojo);
+    color: white;
+  }
+  .btn-secondary {
+    background: var(--gris-claro);
+    color: var(--texto);
+    border: 2px solid var(--gris-borde);
+  }
+
+  /* ===== CARDS DE REGLAS ===== */
+  .rule-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--sombra);
+    border-left: 6px solid var(--naranja);
+  }
+  .rule-card .rule-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+  .rule-card h3 {
+    color: var(--azul-oscuro);
+    margin-bottom: 8px;
+  }
+
+  /* ===== PASOS ===== */
+  .step-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--sombra);
+    border-top: 5px solid var(--azul);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+  }
+  .step-number {
+    background: var(--azul);
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .step-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--azul-oscuro);
+    flex: 1;
+    min-width: 200px;
+  }
+  .step-time {
+    background: var(--naranja);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+  .step-tip {
+    background: #FFF3CD;
+    border-left: 4px solid #FFC107;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+    font-size: 17px;
+  }
+  .step-tip strong { color: #856404; }
+  .step-tasks {
+    list-style: none;
+    margin-top: 15px;
+  }
+  .step-tasks li {
+    padding: 12px 15px 12px 45px;
+    margin-bottom: 8px;
+    background: var(--gris-claro);
+    border-radius: 8px;
+    position: relative;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+  .step-tasks li::before {
+    content: "✓";
+    position: absolute;
+    left: 15px;
+    top: 10px;
+    color: var(--verde);
+    font-weight: bold;
+    font-size: 22px;
+  }
+
+  /* ===== CHECKLIST ===== */
+  .checklist-box {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: var(--sombra);
+    margin-bottom: 20px;
+  }
+  .progress-container {
+    margin-bottom: 20px;
+  }
+  .progress-bar {
+    background: var(--gris-borde);
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .progress-fill {
+    background: linear-gradient(90deg, var(--verde), #20c997);
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .progress-text {
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--texto);
+  }
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 18px;
+    margin-bottom: 10px;
+    background: var(--gris-claro);
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .checklist-item:hover {
+    border-color: var(--azul);
+  }
+  .checklist-item.checked {
+    background: #D4EDDA;
+    border-color: var(--verde);
+  }
+  .checklist-item.checked .checklist-text {
+    text-decoration: line-through;
+    color: var(--texto-suave);
+  }
+  .checklist-item input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
+    margin-right: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    accent-color: var(--verde);
+  }
+  .checklist-text {
+    font-size: 18px;
+    line-height: 1.5;
+    padding-top: 3px;
+  }
+
+  /* ===== FOTOS OBLIGATORIAS ===== */
+  .photo-guide {
+    background: #E7F3FF;
+    border: 2px dashed var(--azul);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .photo-guide h3 {
+    color: var(--azul-oscuro);
+    margin-bottom: 12px;
+  }
+  .photo-list {
+    list-style: none;
+    counter-reset: photo;
+  }
+  .photo-list li {
+    counter-increment: photo;
+    padding: 10px 10px 10px 50px;
+    margin-bottom: 8px;
+    background: white;
+    border-radius: 8px;
+    position: relative;
+    font-size: 17px;
+  }
+  .photo-list li::before {
+    content: counter(photo);
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--azul);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+
+  /* ===== INCIDENCIAS ===== */
+  .incident-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: var(--sombra);
+    border-left: 6px solid var(--rojo);
+  }
+  .incident-card h3 {
+    color: var(--rojo);
+    margin-bottom: 8px;
+  }
+
+  /* ===== TABLA IMPRIMIBLE ===== */
+  .print-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    margin: 20px 0;
+  }
+  .print-table th, .print-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--gris-borde);
+    font-size: 16px;
+  }
+  .print-table th {
+    background: var(--azul);
+    color: white;
+    font-weight: bold;
+  }
+  .print-table td:last-child {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  /* ===== BOTONES FLOTANTES ===== */
+  .floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 200;
+  }
+  .float-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+  }
+  .float-btn:hover { transform: scale(1.1); }
+  .float-btn.whatsapp { background: #25D366; color: white; }
+  .float-btn.text-size { background: white; color: var(--texto); border: 2px solid var(--azul); }
+
+  /* ===== SECCIONES ===== */
+  section {
+    scroll-margin-top: 80px;
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--azul);
+  }
+  .section-title .icon {
+    font-size: 36px;
+  }
+
+  /* ===== INSUMOS ===== */
+  .supply-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-top: 15px;
+  }
+  .supply-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: var(--sombra);
+    font-size: 17px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .supply-item .emoji {
+    font-size: 28px;
+  }
+
+  /* ===== MODO TEXTO GRANDE ===== */
+  body.text-large {
+    font-size: 22px;
+  }
+  body.text-large h1 { font-size: 38px; }
+  body.text-large h2 { font-size: 32px; }
+  body.text-large h3 { font-size: 26px; }
+  body.text-large p, body.text-large li { font-size: 22px; }
+  body.text-large .timer-display { font-size: 64px; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 600px) {
+    h1 { font-size: 26px; }
+    h2 { font-size: 24px; }
+    .timer-display { font-size: 44px; }
+    .step-header { flex-direction: column; align-items: flex-start; }
+    .nav-item { min-width: 65px; font-size: 12px; }
+    .nav-item .icon { font-size: 24px; }
+  }
+
+  /* ===== IMPRESIÓN ===== */
+  @media print {
+    .nav-sticky, .floating-buttons, .timer-box, button, .no-print { display: none !important; }
+    body { background: white; font-size: 14px; padding: 0; }
+    .container { max-width: 100%; padding: 0; }
+    .step-card, .checklist-box, .rule-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    .print-table { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+  <h1>🏠 Manual de Limpieza DeptoTop</h1>
+  <p class="direccion">📍 Av. Ignacio Collao #430, Concepción</p>
+  <p class="direccion">⭐ Estándar Hotelero 5 Estrellas</p>
+</header>
+
+<!-- ===== NAVEGACIÓN STICKY ===== -->
+<nav class="nav-sticky">
+  <a href="#reglas" class="nav-item"><span class="icon">⭐</span><span>Reglas</span></a>
+  <a href="#insumos" class="nav-item"><span class="icon">🧴</span><span>Insumos</span></a>
+  <a href="#paso-a-paso" class="nav-item"><span class="icon">📋</span><span>Pasos</span></a>
+  <a href="#checklist" class="nav-item"><span class="icon">✅</span><span>Checklist</span></a>
+  <a href="#incidencias" class="nav-item"><span class="icon">⚠️</span><span>Avisos</span></a>
+  <a href="#imprimible" class="nav-item"><span class="icon">🖨️</span><span>Imprimir</span></a>
+</nav>
+
+<div class="container">
+
+  <!-- ===== CRONÓMETRO ===== -->
+  <div class="timer-box">
+    <div class="label">⏱️ CRONÓMETRO DE TURNOVER</div>
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    <div class="timer-info">Horario estándar: 10:00 a 14:00 hrs · Duración: 90 a 180 min</div>
+    <div class="timer-buttons">
+      <button class="btn btn-primary" onclick="iniciarTimer()">▶️ Iniciar</button>
+      <button class="btn btn-secondary" onclick="pausarTimer()">⏸️ Pausar</button>
+      <button class="btn btn-danger" onclick="reiniciarTimer()">🔄 Reiniciar</button>
+    </div>
+  </div>
+
+  <!-- ===== 1. REGLAS DE ORO ===== -->
+  <section id="reglas">
+    <div class="section-title">
+      <span class="icon">⭐</span>
+      <h2>1. Reglas de Oro del Aseo</h2>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🚫</div>
+      <h3>Cero rastro del huésped anterior</h3>
+      <p>Ni un pelo, ni una miga, ni olor a encierro ni a comida acumulada. La vivienda debe sentirse totalmente nueva.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🔍</div>
+      <h3>Detalles "invisibles" impecables</h3>
+      <p>Levantar el desagüe de la ducha, control remoto libre de polvo, ventanales transparentes para la vista al estadio.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">📸</div>
+      <h3>Evidencia visual obligatoria</h3>
+      <p>Al terminar, envíe <strong>5 fotos clave + un video corto</strong> al grupo de WhatsApp antes de cerrar y salir.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">✨</div>
+      <h3>Todo limpio y repuesto</h3>
+      <p>Todo lo que usó el huésped anterior debe quedar limpio, repuesto y en su lugar correspondiente, listo para el nuevo cliente.</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">❓</div>
+      <h3>Pregunte antes de improvisar</h3>
+      <p>Ante cualquier duda, consulte directamente al administrador antes de tomar decisiones apresuradas.</p>
+    </div>
+  </section>
+
+  <!-- ===== 2. INSUMOS ===== -->
+  <section id="insumos">
+    <div class="section-title">
+      <span class="icon">🧴</span>
+      <h2>2. Insumos y Kit de Limpieza</h2>
+    </div>
+
+    <div class="checklist-box">
+      <h3>Productos que debe tener a mano:</h3>
+      <div class="supply-grid">
+        <div class="supply-item"><span class="emoji">🧼</span> Lisoform (desinfectante)</div>
+        <div class="supply-item"><span class="emoji">🧽</span> Amonio cuaternario</div>
+        <div class="supply-item"><span class="emoji">🫧</span> Cif (crema limpiadora)</div>
+        <div class="supply-item"><span class="emoji">💧</span> Antigrasa líquido</div>
+        <div class="supply-item"><span class="emoji">🪟</span> Limpiavidrios</div>
+        <div class="supply-item"><span class="emoji">🧴</span> Lustramuebles</div>
+        <div class="supply-item"><span class="emoji">🧺</span> Detergente y suavizante</div>
+        <div class="supply-item"><span class="emoji">🧻</span> Toalla Nova</div>
+        <div class="supply-item"><span class="emoji">🧤</span> Guantes de goma</div>
+        <div class="supply-item"><span class="emoji">🪣</span> Paños de microfibra</div>
+        <div class="supply-item"><span class="emoji">🧹</span> Escoba, mopa y aspiradora</div>
+        <div class="supply-item"><span class="emoji">🗑️</span> Bolsas de basura</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 3. TAREAS GENERALES ===== -->
+  <section id="generales">
+    <div class="section-title">
+      <span class="icon">📌</span>
+      <h2>3. Tareas Generales (Todas las áreas)</h2>
+    </div>
+
+    <div class="checklist-box">
+      <ul class="step-tasks">
+        <li>Barrer y trapear todos los pisos de todas las áreas sin excepción.</li>
+        <li>Desinfectar con Lisoform: colchones, persianas, cerraduras, manillas, interruptores y controles.</li>
+        <li>Pasar paño a todos los muebles quitando el polvo acumulado.</li>
+        <li>Reponer consumibles: jabón, shampoo, acondicionador, papel higiénico, toalla nova, té, café, azúcar, sal, aceite y lavaloza.</li>
+        <li>Limpiar filtro de pelusa de lavadora/secadora antes de cada uso.</li>
+      </ul>
+
+      <div class="step-tip">
+        💡 <strong>Tip para Andrea:</strong> El orden de capas de la ropa de cama es: 1) Cubrecolchón → 2) Cubrealmohada → 3) Funda de cama y almohada → 4) Sábana → 5) Frazada → 6) Cobertor.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 4. PASO A PASO ===== -->
+  <section id="paso-a-paso">
+    <div class="section-title">
+      <span class="icon">📋</span>
+      <h2>4. Paso a Paso por Zonas</h2>
+    </div>
+
+    <!-- PASO 1 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">1</div>
+        <div class="step-title">🚪 Entrada, ventilación e inspección</div>
+        <div class="step-time">⏱️ 5 min</div>
+      </div>
+      <ul class="step-tasks">
+        <li>Abrir ventanales de la terraza y todas las puertas para generar corriente de aire.</li>
+        <li>Revisar si el huésped saliente olvidó objetos (cargadores, ropa, documentos). Si hay algo, foto al WhatsApp de inmediato.</li>
+        <li>Sacar la basura de cocina y baño, y cambiar las bolsas.</li>
+        <li>Echar a lavar las toallas con detergente, suavizante y cloro. Colgar en el tendedero.</li>
+        <li>Lavar ropa de cama con programa lavado + secado.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">2</div>
+        <div class="step-title">🛏️ Dormitorio principal y camas</div>
+        <div class="step-time">⏱️ 25 min</div>
+      </div>
+      <div class="step-tip">
+        💡 <strong>Estándar DeptoTop:</strong> Aquí hay 3 camas. Deben verse impecables, tensas y acogedoras.
+      </div>
+      <ul class="step-tasks">
+        <li>Retirar sábanas usadas y meterlas a la lavadora-secadora inmediatamente.</li>
+        <li>Inspeccionar protectores de colchón y almohadas (cero manchas). Si las camas fueron ocupadas, lavar cubrecolchones y cubrealmohadas.</li>
+        <li>Cama matrimonial: sábanas fijas bien tensadas, plumón centrado, 2 almohadas + 2 cojines decorativos.</li>
+        <li>Cama nido (living): armar ambas camas cómodas con sábanas.</li>
+        <li>Rociar colchones con Lisoform a distancia prudente para evitar manchas.</li>
+        <li>Limpiar veladores, cabecera y repasar enchufes/cargadores laterales.</li>
+        <li>Barrer y pasar aspiradora debajo de las camas, esquinas y dentro del clóset.</li>
+        <li>Mantener la ropa de cama bien doblada y ordenada en el clóset.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">3</div>
+        <div class="step-title">💻 Los 2 escritorios ejecutivos</div>
+        <div class="step-time">⏱️ 15 min</div>
+      </div>
+      <div class="step-tip">
+        💡 <strong>Estándar DeptoTop:</strong> El trabajador llega a conectarse y trabajar altiro. La zona debe transmitir prolijidad.
+      </div>
+      <ul class="step-tasks">
+        <li>Desinfectar la superficie de los 2 escritorios ejecutivos (dormitorio y living).</li>
+        <li>Limpiar las sillas ejecutivas (malla/cuero), apoyabrazos y ruedas.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 4 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">4</div>
+        <div class="step-title">🚿 Baño full y Kit de Rescate</div>
+        <div class="step-time">⏱️ 25 min</div>
+      </div>
+      <ul class="step-tasks">
+        <li>Desinfectar con amonio cuaternario: lavamanos, mamparas de ducha y WC.</li>
+        <li>Limpiar espejo con limpiavidrios (cero huellas ni salpicaduras).</li>
+        <li>Sacar el desagüe de la ducha y limpiarlo a mano.</li>
+        <li>Barrer detrás del baño y debajo del lavamanos. Desinfectar piso de la ducha.</li>
+        <li>Secar grifería con papel hasta que quede brillante sin marcas de agua.</li>
+        <li>Lavar y secar toallas. Limpiar el tapete de bajada de baño.</li>
+        <li>Reponer amenities: jabón, shampoo, acondicionador; 2 rollos de papel higiénico; 1 toalla de mano + 1 de cuerpo + 4 toallas de cuerpo dobladas estilo hotel.</li>
+        <li>Revisar Kit de Rescate: botiquín completo, secador limpio, cargadores en su organizador.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 5 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">5</div>
+        <div class="step-title">🍳 Cocina y lavandería</div>
+        <div class="step-time">⏱️ 25 min</div>
+      </div>
+      <ul class="step-tasks">
+        <li>Lavar/secar loza, cubiertos y ollas. Limpiar escurridor y lavaplatos con Cif.</li>
+        <li>Limpiar quemadores con antigrasa. Microondas y horno por dentro y fuera (cero olores a grasa).</li>
+        <li>Refrigerador: desenchufar, limpiar por dentro, vaciar y dejar abierto para evitar humedad.</li>
+        <li>Hervidor: vaciar, desenchufar y desinfectar; verificar que no tenga sarro.</li>
+        <li>Extractor de aire: retirar filtros, limpiarlos con antigrasa, secar y volver a colocar.</li>
+        <li>Mesón, cerámicas y puertas de muebles con antigrasa. Sillas con lustramuebles.</li>
+        <li>Lavar/secar manteles y paños de cocina. Reponer 1 paño limpio.</li>
+        <li>Lavadora-secadora: limpiar filtro de pelusas, pasar paño por goma del tambor y dejar escotilla entreabierta.</li>
+        <li>Reponer: esponja, lavaloza, antigrasa, limpiavidrios, amonio, desinfectante, toalla nova, aceite, sal, azúcar, té, café y 5 bolsas de basura extras.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 6 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">6</div>
+        <div class="step-title">🛋️ Living, ventanales y terraza</div>
+        <div class="step-time">⏱️ 15 min</div>
+      </div>
+      <ul class="step-tasks">
+        <li>Limpiar pantalla del Smart TV con paño microfibra seco (sin químicos). Controles ordenados junto a TV. TV desenchufada.</li>
+        <li>Persianas: bajarlas y rociarlas con Lisoform.</li>
+        <li>Ventanales termopanel: limpiar vidrios por ambos lados con plumilla y limpiavidrios.</li>
+        <li>Terraza: barrer y trapear piso, limpiar mesa y sillas. Ventanales de acceso limpios.</li>
+      </ul>
+    </div>
+
+    <!-- PASO 7 -->
+    <div class="step-card">
+      <div class="step-header">
+        <div class="step-number">7</div>
+        <div class="step-title">🚗 Estacionamiento y cierre</div>
+        <div class="step-time">⏱️ 5 min</div>
+      </div>
+      <ul class="step-tasks">
+        <li>Verificar control remoto del portón en su lugar (junto a llaves o perchero de entrada).</li>
+        <li>Pasar mopa fina/aspiradora en la entrada del depto.</li>
+        <li>Toque de aromatizante ambiental suave (aroma fresco/neutro).</li>
+        <li>Cerrar ventanales, apagar luces y asegurar cerradura inteligente al salir.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== 5. CHECKLIST ===== -->
+  <section id="checklist">
+    <div class="section-title">
+      <span class="icon">✅</span>
+      <h2>5. Checklist Final Interactivo</h2>
+    </div>
+
+    <div class="checklist-box">
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill">0%</div>
+        </div>
+        <div class="progress-text" id="progressText">0 de 10 tareas completadas</div>
+      </div>
+
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🔥 Gas apagado</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">💡 Todas las luces apagadas</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">📶 WiFi SIEMPRE enchufado</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🔌 TV, hervidor y refrigerador desenchufados</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🧴 Productos de limpieza almacenados correctamente</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🪟 Ventanales y puertas cerrados PERO SIN PESTILLO</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🔑 Llaves en su lugar</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">📺 Control remoto del portón en su lugar</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">📸 Evidencia enviada: 5 fotos + video corto</span>
+      </div>
+      <div class="checklist-item" onclick="toggleCheck(this)">
+        <input type="checkbox" onclick="event.stopPropagation(); toggleCheck(this.parentElement)">
+        <span class="checklist-text">🧹 Departamento completamente limpio y ordenado</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
+        <button class="btn btn-success" onclick="marcarTodos()">✅ Marcar todos</button>
+        <button class="btn btn-secondary" onclick="reiniciarChecklist()">🔄 Reiniciar</button>
+      </div>
+
+      <div class="photo-guide">
+        <h3>📸 Las 5 fotos obligatorias al WhatsApp:</h3>
+        <ol class="photo-list">
+          <li>Cama principal (bien tendida, almohadas ordenadas)</li>
+          <li>Baño (toallas dobladas y amenities montados)</li>
+          <li>Escritorio principal (silla ejecutiva limpia, WiFi visible)</li>
+          <li>Terraza/vista (ventanal impecable con vista al estadio)</li>
+          <li>Cocina/lavadora (cubiertas despejadas y electrodomésticos cerrados)</li>
+        </ol>
+      </div>
+
+      <button class="btn btn-success" style="width: 100%; font-size: 20px;" onclick="enviarWhatsApp()">
+        💬 Enviar Reporte por WhatsApp
+      </button>
+    </div>
+  </section>
+
+  <!-- ===== 6. INCIDENCIAS ===== -->
+  <section id="incidencias">
+    <div class="section-title">
+      <span class="icon">⚠️</span>
+      <h2>6. Protocolo ante Incidencias</h2>
+    </div>
+
+    <div class="incident-card">
+      <h3>🔨 Daños o Faltantes</h3>
+      <p>Sacar foto de inmediato y reportar al administrador <strong>antes</strong> de reparar o limpiar la zona afectada para mantener el registro visual del estado original.</p>
+    </div>
+
+    <div class="incident-card">
+      <h3>🎒 Objetos Olvidados</h3>
+      <p>Guardar en una bolsa etiquetada con la fecha exacta y dejarla dentro del clóset de insumos. Avisar de inmediato por WhatsApp.</p>
+    </div>
+
+    <div class="incident-card">
+      <h3>📦 Falla o Stock Bajo</h3>
+      <p>Reportar cuando quede menos de 1 semana de stock de productos de aseo, amenities o consumibles para efectuar compras masivas a bajo costo.</p>
+    </div>
+  </section>
+
+  <!-- ===== 7. IMPRIMIBLE ===== -->
+  <section id="imprimible">
+    <div class="section-title">
+      <span class="icon">🖨️</span>
+      <h2>7. Hoja Imprimible de Cierre</h2>
+    </div>
+
+    <div class="checklist-box">
+      <p style="margin-bottom: 15px;">Ficha física para marcado y firma en terreno.</p>
+      <button class="btn btn-primary no-print" onclick="window.print()">🖨️ Imprimir Hoja de Cierre</button>
+    </div>
+
+    <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: var(--sombra);">
+      <h3 style="text-align: center; color: var(--azul-oscuro);">DEPTOPTOP — HOJA DE CIERRE DE TURNOVER</h3>
+      <p style="text-align: center; margin-bottom: 5px;">Av. Ignacio Collao #430, Concepción · Estándar Hotelero 5★</p>
+      <p style="text-align: center; margin-bottom: 20px;">Horario: 10:00 - 14:00 hrs · Tiempo Máx: 180 min</p>
+
+      <p><strong>FECHA:</strong> _______________ &nbsp;&nbsp; <strong>TURNOVER N°:</strong> _______ &nbsp;&nbsp; <strong>N° HUÉSPEDES:</strong> _______</p>
+
+      <table class="print-table">
+        <thead>
+          <tr><th>Zona</th><th>Tarea clave</th><th>✔</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>General</td><td>Pisos barridos y trapeados</td><td>☐</td></tr>
+          <tr><td>General</td><td>Colchones/persianas/cerraduras con Lisoform</td><td>☐</td></tr>
+          <tr><td>General</td><td>Ropa de cama cambiada (orden de capas)</td><td>☐</td></tr>
+          <tr><td>Dormitorio</td><td>3 camas armadas y tensas</td><td>☐</td></tr>
+          <tr><td>Dormitorio</td><td>Cubrecolchones/cubrealmohadas lavados</td><td>☐</td></tr>
+          <tr><td>Escritorios</td><td>2 escritorios desinfectados y cables ordenados</td><td>☐</td></tr>
+          <tr><td>Baño</td><td>Amonio cuaternario en lavamanos/mamparas/WC</td><td>☐</td></tr>
+          <tr><td>Baño</td><td>Desagüe de ducha limpiado a mano</td><td>☐</td></tr>
+          <tr><td>Baño</td><td>Toallas, tapete y amenities repuestos</td><td>☐</td></tr>
+          <tr><td>Cocina</td><td>Refrigerador desenchufado, limpio y abierto</td><td>☐</td></tr>
+          <tr><td>Cocina</td><td>Hervidor vaciado y desenchufado</td><td>☐</td></tr>
+          <tr><td>Cocina</td><td>Extractor, quemadores, escurridor y lavaplatos</td><td>☐</td></tr>
+          <tr><td>Cocina</td><td>5 bolsas extras y consumibles repuestos</td><td>☐</td></tr>
+          <tr><td>Living</td><td>Sillón cama armado como cama de 2 plazas</td><td>☐</td></tr>
+          <tr><td>Living</td><td>Persianas con Lisoform y TV desenchufada</td><td>☐</td></tr>
+          <tr><td>Terraza</td><td>Piso barrido/trapeado y ventanales limpios</td><td>☐</td></tr>
+          <tr><td>Cierre</td><td>Gas/luces apagados, wifi enchufado</td><td>☐</td></tr>
+          <tr><td>Cierre</td><td>Ventanas sin pestillo y llaves en su lugar</td><td>☐</td></tr>
+          <tr><td>Cierre</td><td>5 fotos + video enviados al WhatsApp</td><td>☐</td></tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top: 20px;"><strong>Firma Trabajadora:</strong> ________________________</p>
+      <p><strong>Hora de salida:</strong> ________________________</p>
+
+      <div style="margin-top: 20px; padding: 15px; background: #FFF3CD; border-radius: 8px; font-size: 16px;">
+        <strong>📌 Recuerde:</strong>
+        <ul style="margin-top: 8px; padding-left: 20px;">
+          <li>Si algo no funciona o se ve dañado, avise de inmediato antes de terminar.</li>
+          <li>Si encuentra un objeto olvidado por el huésped, guárdelo y avise.</li>
+          <li>Ante cualquier duda, pregunte antes de improvisar.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align: center; padding: 30px 15px; color: var(--texto-suave); font-size: 16px;">
+    <p>⭐ DeptoTop — Estándar Hotelero 5 Estrellas ⭐</p>
+    <p>Concepción, Chile · Manual de Limpieza y Protocolo de Rotación</p>
+  </footer>
+
+</div>
+
+<!-- ===== BOTONES FLOTANTES ===== -->
+<div class="floating-buttons">
+  <button class="float-btn whatsapp" onclick="enviarWhatsApp()" title="WhatsApp al administrador">💬</button>
+  <button class="float-btn text-size" onclick="toggleTextoGrande()" title="Aumentar tamaño de texto" id="btnTexto">🔍</button>
+</div>
+
+<script>
+  // ===== CRONÓMETRO =====
+  let tiempo = 0;
+  let intervalo = null;
+  let corriendo = false;
+
+  function iniciarTimer() {
+    if (!corriendo) {
+      corriendo = true;
+      intervalo = setInterval(() => {
+        tiempo++;
+        actualizarDisplay();
+      }, 1000);
+    }
+  }
+
+  function pausarTimer() {
+    corriendo = false;
+    clearInterval(intervalo);
+  }
+
+  function reiniciarTimer() {
+    pausarTimer();
+    tiempo = 0;
+    actualizarDisplay();
+  }
+
+  function actualizarDisplay() {
+    const h = Math.floor(tiempo / 3600);
+    const m = Math.floor((tiempo % 3600) / 60);
+    const s = tiempo % 60;
+    document.getElementById('timerDisplay').textContent =
+      String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+
+  // ===== CHECKLIST =====
+  function toggleCheck(item) {
+    const checkbox = item.querySelector('input[type="checkbox"]');
+    checkbox.checked = !checkbox.checked;
+    item.classList.toggle('checked', checkbox.checked);
+    actualizarProgreso();
+  }
+
+  function actualizarProgreso() {
+    const total = document.querySelectorAll('.checklist-item').length;
+    const marcados = document.querySelectorAll('.checklist-item.checked').length;
+    const porcentaje = Math.round((marcados / total) * 100);
+    document.getElementById('progressFill').style.width = porcentaje + '%';
+    document.getElementById('progressFill').textContent = porcentaje + '%';
+    document.getElementById('progressText').textContent = marcados + ' de ' + total + ' tareas completadas';
+  }
+
+  function marcarTodos() {
+    document.querySelectorAll('.checklist-item').forEach(item => {
+      item.classList.add('checked');
+      item.querySelector('input[type="checkbox"]').checked = true;
+    });
+    actualizarProgreso();
+  }
+
+  function reiniciarChecklist() {
+    document.querySelectorAll('.checklist-item').forEach(item => {
+      item.classList.remove('checked');
+      item.querySelector('input[type="checkbox"]').checked = false;
+    });
+    actualizarProgreso();
+  }
+
+  // ===== WHATSAPP =====
+  function enviarWhatsApp() {
+    const total = document.querySelectorAll('.checklist-item').length;
+    const marcados = document.querySelectorAll('.checklist-item.checked').length;
+    const mensaje = encodeURIComponent(
+      '✅ Reporte de Turnover DeptoTop\n' +
+      '📍 Av. Ignacio Collao #430\n' +
+      '📅 Fecha: ' + new Date().toLocaleDateString('es-CL') + '\n' +
+      '⏰ Hora: ' + new Date().toLocaleTimeString('es-CL') + '\n' +
+      '✅ Checklist: ' + marcados + '/' + total + ' tareas completadas\n\n' +
+      '📸 Adjunto 5 fotos + video de evidencia.'
+    );
+    window.open('https://wa.me/?text=' + mensaje, '_blank');
+  }
+
+  // ===== TEXTO GRANDE =====
+  function toggleTextoGrande() {
+    document.body.classList.toggle('text-large');
+    const btn = document.getElementById('btnTexto');
+    btn.textContent = document.body.classList.contains('text-large') ? '🔎' : '🔍';
+  }
+</script>
+
+</body>
+</html>
