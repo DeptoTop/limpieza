@@ -8,6 +8,13 @@
   /* ===== RESET Y BASE ===== */
   * { margin: 0; padding: 0; box-sizing: border-box; }
   
+  html, body {
+    overflow-x: hidden !important;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
   :root {
     --azul: #0066CC;
     --azul-oscuro: #004999;
@@ -87,7 +94,8 @@
 
   /* ===== CONTENEDOR ===== */
   .container {
-    max-width: 900px;
+    max-width: 100%;
+    overflow-x: hidden;
     margin: 0 auto;
     padding: 20px 15px;
   }
@@ -205,11 +213,15 @@
     font-size: 17px;
   }
   .step-tip strong { color: #856404; }
+
   .step-tasks {
     list-style: none;
     margin-top: 15px;
+    padding: 0;
   }
-  .step-tasks li {
+  
+  /* Estilos para tareas generales (no swipe) */
+  .step-tasks li:not(.swipe-task) {
     padding: 12px 15px 12px 45px;
     margin-bottom: 8px;
     background: var(--gris-claro);
@@ -218,7 +230,7 @@
     font-size: 17px;
     line-height: 1.5;
   }
-  .step-tasks li::before {
+  .step-tasks li:not(.swipe-task)::before {
     content: "✓";
     position: absolute;
     left: 15px;
@@ -226,6 +238,52 @@
     color: var(--verde);
     font-weight: bold;
     font-size: 22px;
+  }
+
+  /* ===== SWIPE TAREAS (SUB-TASKS) ===== */
+  .swipe-task {
+    position: relative;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    background: var(--gris-claro);
+    border-radius: 10px;
+    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease, border-left-color 0.3s ease;
+    will-change: transform, background-color;
+  }
+
+  .swipe-task.dragging {
+    transition: none;
+  }
+
+  .swipe-task[data-state="completed"] {
+    background-color: rgba(40, 167, 69, 0.15);
+    border-left-color: var(--verde);
+  }
+
+  .swipe-task[data-state="completed"] .task-text {
+    color: var(--texto);
+    font-weight: 600;
+  }
+
+  .swipe-task[data-state="completed"] .task-icon::after {
+    content: "✓";
+    color: var(--verde);
+    font-weight: 900;
+    font-size: 24px;
+  }
+
+  .swipe-task[data-state="pending"] .task-icon::after {
+    content: "○";
+    color: var(--gris-borde);
+    font-size: 24px;
   }
 
   /* ===== CHECKLIST ===== */
@@ -469,10 +527,11 @@
     .nav-sticky, .floating-buttons, button, .no-print { display: none !important; }
     body { background: white; font-size: 14px; padding: 0; }
     .container { max-width: 100%; padding: 0; }
-    .step-card, .checklist-box, .rule-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+    .step-card, .checklist-box, .rule-card, .incident-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
     .print-table { font-size: 12px; }
   }
-    /* ===== GRID DE REGLAS (2x2) ===== */
+
+  /* ===== GRID DE REGLAS (2x2) ===== */
   .rule-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -506,38 +565,36 @@
       grid-template-columns: 1fr;
     }
   }
-    /* ===== GRID DE INCIDENCIAS (1x3) ===== */
+
+  /* ===== GRID DE INCIDENCIAS (1x3) ===== */
   .incident-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
-    gap: 15px; /* Espacio entre tarjetas */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
   }
 
-  /* Ajustes para que las tarjetas encajen bien en columnas estrechas */
   .incident-grid .incident-card {
-    margin-bottom: 0; /* Quitamos el margen inferior que tenían */
+    margin-bottom: 0;
     padding: 18px;
   }
 
   .incident-grid .incident-card h3 {
-    font-size: 19px; /* Título un poco más compacto */
+    font-size: 19px;
     margin-bottom: 10px;
   }
 
   .incident-grid .incident-card p {
-    font-size: 16px; /* Texto legible pero más compacto */
+    font-size: 16px;
     line-height: 1.5;
     margin-bottom: 0;
   }
 
-  /* RESPONSIVE: En tablets vuelve a 2 columnas */
   @media (max-width: 900px) and (min-width: 601px) {
     .incident-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
-  /* RESPONSIVE: En móviles vuelve a 1 columna para máxima legibilidad */
   @media (max-width: 600px) {
     .incident-grid {
       grid-template-columns: 1fr;
@@ -668,11 +725,26 @@
         <div class="step-time">⏱️ 5 min</div>
       </div>
       <ul class="step-tasks">
-        <li>Abrir ventanales de la terraza y todas las puertas para generar corriente de aire.</li>
-        <li>Revisar si el huésped saliente olvidó objetos (cargadores, ropa, documentos). Si hay algo, foto al WhatsApp de inmediato.</li>
-        <li>Sacar la basura de cocina y baño, y cambiar las bolsas.</li>
-        <li>Echar a lavar las toallas con detergente, suavizante y cloro. Colgar en el tendedero.</li>
-        <li>Lavar ropa de cama con programa lavado + secado.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Abrir ventanales de la terraza y todas las puertas para generar corriente de aire.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Revisar si el huésped saliente olvidó objetos (cargadores, ropa, documentos). Si hay algo, foto al WhatsApp de inmediato.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Sacar la basura de cocina y baño, y cambiar las bolsas.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Echar a lavar las toallas con detergente, suavizante y cloro. Colgar en el tendedero.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Lavar ropa de cama con programa lavado + secado.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -687,14 +759,38 @@
         💡 <strong>Estándar DeptoTop:</strong> Aquí hay 3 camas. Deben verse impecables, tensas y acogedoras.
       </div>
       <ul class="step-tasks">
-        <li>Retirar sábanas usadas y meterlas a la lavadora-secadora inmediatamente.</li>
-        <li>Inspeccionar protectores de colchón y almohadas (cero manchas). Si las camas fueron ocupadas, lavar cubrecolchones y cubrealmohadas.</li>
-        <li>Cama matrimonial: sábanas fijas bien tensadas, plumón centrado, 2 almohadas + 2 cojines decorativos.</li>
-        <li>Cama nido (living): armar ambas camas cómodas con sábanas.</li>
-        <li>Rociar colchones con Lisoform a distancia prudente para evitar manchas.</li>
-        <li>Limpiar veladores, cabecera y repasar enchufes/cargadores laterales.</li>
-        <li>Barrer y pasar aspiradora debajo de las camas, esquinas y dentro del clóset.</li>
-        <li>Mantener la ropa de cama bien doblada y ordenada en el clóset.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Retirar sábanas usadas y meterlas a la lavadora-secadora inmediatamente.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Inspeccionar protectores de colchón y almohadas (cero manchas). Si las camas fueron ocupadas, lavar cubrecolchones y cubrealmohadas.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Cama matrimonial: sábanas fijas bien tensadas, plumón centrado, 2 almohadas + 2 cojines decorativos.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Cama nido (living): armar ambas camas cómodas con sábanas.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Rociar colchones con Lisoform a distancia prudente para evitar manchas.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Limpiar veladores, cabecera y repasar enchufes/cargadores laterales.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Barrer y pasar aspiradora debajo de las camas, esquinas y dentro del clóset.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Mantener la ropa de cama bien doblada y ordenada en el clóset.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -709,8 +805,14 @@
         💡 <strong>Estándar DeptoTop:</strong> El trabajador llega a conectarse y trabajar altiro. La zona debe transmitir prolijidad.
       </div>
       <ul class="step-tasks">
-        <li>Desinfectar la superficie de los 2 escritorios ejecutivos (dormitorio y living).</li>
-        <li>Limpiar las sillas ejecutivas (malla/cuero), apoyabrazos y ruedas.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Desinfectar la superficie de los 2 escritorios ejecutivos (dormitorio y living).</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Limpiar las sillas ejecutivas (malla/cuero), apoyabrazos y ruedas.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -722,14 +824,38 @@
         <div class="step-time">⏱️ 25 min</div>
       </div>
       <ul class="step-tasks">
-        <li>Desinfectar con amonio cuaternario: lavamanos, mamparas de ducha y WC.</li>
-        <li>Limpiar espejo con limpiavidrios (cero huellas ni salpicaduras).</li>
-        <li>Sacar el desagüe de la ducha y limpiarlo a mano.</li>
-        <li>Barrer detrás del baño y debajo del lavamanos. Desinfectar piso de la ducha.</li>
-        <li>Secar grifería con papel hasta que quede brillante sin marcas de agua.</li>
-        <li>Lavar y secar toallas. Limpiar el tapete de bajada de baño.</li>
-        <li>Reponer amenities: jabón, shampoo, acondicionador; 2 rollos de papel higiénico; 1 toalla de mano + 1 de cuerpo + 4 toallas de cuerpo dobladas estilo hotel.</li>
-        <li>Revisar Kit de Rescate: botiquín completo, secador limpio, cargadores en su organizador.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Desinfectar con amonio cuaternario: lavamanos, mamparas de ducha y WC.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Limpiar espejo con limpiavidrios (cero huellas ni salpicaduras).</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Sacar el desagüe de la ducha y limpiarlo a mano.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Barrer detrás del baño y debajo del lavamanos. Desinfectar piso de la ducha.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Secar grifería con papel hasta que quede brillante sin marcas de agua.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Lavar y secar toallas. Limpiar el tapete de bajada de baño.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Reponer amenities: jabón, shampoo, acondicionador; 2 rollos de papel higiénico; 1 toalla de mano + 1 de cuerpo + 4 toallas de cuerpo dobladas estilo hotel.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Revisar Kit de Rescate: botiquín completo, secador limpio, cargadores en su organizador.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -741,15 +867,42 @@
         <div class="step-time">⏱️ 25 min</div>
       </div>
       <ul class="step-tasks">
-        <li>Lavar/secar loza, cubiertos y ollas. Limpiar escurridor y lavaplatos con Cif.</li>
-        <li>Limpiar quemadores con antigrasa. Microondas y horno por dentro y fuera (cero olores a grasa).</li>
-        <li>Refrigerador: desenchufar, limpiar por dentro, vaciar y dejar abierto para evitar humedad.</li>
-        <li>Hervidor: vaciar, desenchufar y desinfectar; verificar que no tenga sarro.</li>
-        <li>Extractor de aire: retirar filtros, limpiarlos con antigrasa, secar y volver a colocar.</li>
-        <li>Mesón, cerámicas y puertas de muebles con antigrasa. Sillas con lustramuebles.</li>
-        <li>Lavar/secar manteles y paños de cocina. Reponer 1 paño limpio.</li>
-        <li>Lavadora-secadora: limpiar filtro de pelusas, pasar paño por goma del tambor y dejar escotilla entreabierta.</li>
-        <li>Reponer: esponja, lavaloza, antigrasa, limpiavidrios, amonio, desinfectante, toalla nova, aceite, sal, azúcar, té, café y 5 bolsas de basura extras.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Lavar/secar loza, cubiertos y ollas. Limpiar escurridor y lavaplatos con Cif.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Limpiar quemadores con antigrasa. Microondas y horno por dentro y fuera (cero olores a grasa).</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Refrigerador: desenchufar, limpiar por dentro, vaciar y dejar abierto para evitar humedad.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Hervidor: vaciar, desenchufar y desinfectar; verificar que no tenga sarro.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Extractor de aire: retirar filtros, limpiarlos con antigrasa, secar y volver a colocar.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Mesón, cerámicas y puertas de muebles con antigrasa. Sillas con lustramuebles.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Lavar/secar manteles y paños de cocina. Reponer 1 paño limpio.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Lavadora-secadora: limpiar filtro de pelusas, pasar paño por goma del tambor y dejar escotilla entreabierta.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Reponer: esponja, lavaloza, antigrasa, limpiavidrios, amonio, desinfectante, toalla nova, aceite, sal, azúcar, té, café y 5 bolsas de basura extras.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -761,10 +914,22 @@
         <div class="step-time">⏱️ 15 min</div>
       </div>
       <ul class="step-tasks">
-        <li>Limpiar pantalla del Smart TV con paño microfibra seco (sin químicos). Controles ordenados junto a TV. TV desenchufada.</li>
-        <li>Persianas: bajarlas y rociarlas con Lisoform.</li>
-        <li>Ventanales termopanel: limpiar vidrios por ambos lados con plumilla y limpiavidrios.</li>
-        <li>Terraza: barrer y trapear piso, limpiar mesa y sillas. Ventanales de acceso limpios.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Limpiar pantalla del Smart TV con paño microfibra seco (sin químicos). Controles ordenados junto a TV. TV desenchufada.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Persianas: bajarlas y rociarlas con Lisoform.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Ventanales termopanel: limpiar vidrios por ambos lados con plumilla y limpiavidrios.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Terraza: barrer y trapear piso, limpiar mesa y sillas. Ventanales de acceso limpios.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
 
@@ -776,10 +941,22 @@
         <div class="step-time">⏱️ 5 min</div>
       </div>
       <ul class="step-tasks">
-        <li>Verificar control remoto del portón en su lugar (junto a llaves o perchero de entrada).</li>
-        <li>Pasar mopa fina/aspiradora en la entrada del depto.</li>
-        <li>Toque de aromatizante ambiental suave (aroma fresco/neutro).</li>
-        <li>Cerrar ventanales, apagar luces y asegurar cerradura inteligente al salir.</li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Verificar control remoto del portón en su lugar (junto a llaves o perchero de entrada).</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Pasar mopa fina/aspiradora en la entrada del depto.</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Toque de aromatizante ambiental suave (aroma fresco/neutro).</span>
+          <span class="task-icon"></span>
+        </li>
+        <li class="swipe-task" data-state="pending">
+          <span class="task-text">Cerrar ventanales, apagar luces y asegurar cerradura inteligente al salir.</span>
+          <span class="task-icon"></span>
+        </li>
       </ul>
     </div>
   </section>
@@ -863,31 +1040,30 @@
   </section>
 
   <!-- ===== 6. INCIDENCIAS ===== -->
-<section id="incidencias">
-  <div class="section-title">
-    <span class="icon">⚠️</span>
-    <h2>6. Protocolo ante Incidencias</h2>
-  </div>
-
-  <!-- 👇 NUEVO CONTENEDOR GRID 1x3 -->
-  <div class="incident-grid">
-    <div class="incident-card">
-      <h3>🔨 Daños o Faltantes</h3>
-      <p>Sacar foto de inmediato y reportar al administrador <strong>antes</strong> de reparar o limpiar la zona afectada para mantener el registro visual del estado original.</p>
+  <section id="incidencias">
+    <div class="section-title">
+      <span class="icon">⚠️</span>
+      <h2>6. Protocolo ante Incidencias</h2>
     </div>
 
-    <div class="incident-card">
-      <h3>🎒 Objetos Olvidados</h3>
-      <p>Guardar en una bolsa etiquetada con la fecha exacta y dejarla dentro del clóset de insumos. Avisar de inmediato por WhatsApp.</p>
-    </div>
+    <div class="incident-grid">
+      <div class="incident-card">
+        <h3>🔨 Daños o Faltantes</h3>
+        <p>Sacar foto de inmediato y reportar al administrador <strong>antes</strong> de reparar o limpiar la zona afectada para mantener el registro visual del estado original.</p>
+      </div>
 
-    <div class="incident-card">
-      <h3>📦 Falla o Stock Bajo</h3>
-      <p>Reportar cuando quede menos de 1 semana de stock de productos de aseo, amenities o consumibles para efectuar compras masivas a bajo costo.</p>
+      <div class="incident-card">
+        <h3>🎒 Objetos Olvidados</h3>
+        <p>Guardar en una bolsa etiquetada con la fecha exacta y dejarla dentro del clóset de insumos. Avisar de inmediato por WhatsApp.</p>
+      </div>
+
+      <div class="incident-card">
+        <h3>📦 Falla o Stock Bajo</h3>
+        <p>Reportar cuando quede menos de 1 semana de stock de productos de aseo, amenities o consumibles para efectuar compras masivas a bajo costo.</p>
+      </div>
     </div>
-  </div>
-  <!-- 👆 FIN DEL GRID -->
-</section>
+  </section>
+
   <!-- ===== 7. IMPRIMIBLE ===== -->
   <section id="imprimible">
     <div class="section-title">
@@ -1016,8 +1192,63 @@
     const btn = document.getElementById('btnTexto');
     btn.textContent = document.body.classList.contains('text-large') ? '🔎' : '🔍';
   }
+
+  // ===== LÓGICA DE SWIPE BIDIRECCIONAL EN SUB-TAREAS =====
+  function initSwipeTasks() {
+    const tasks = document.querySelectorAll('.swipe-task');
+    const THRESHOLD_PERCENT = 0.4;
+
+    tasks.forEach(task => {
+      let startX = 0, currentX = 0, isDragging = false;
+
+      task.addEventListener('touchstart', handleStart, { passive: true });
+      task.addEventListener('touchmove', handleMove, { passive: false });
+      task.addEventListener('touchend', handleEnd);
+      task.addEventListener('mousedown', handleStart);
+      task.addEventListener('mousemove', handleMove);
+      task.addEventListener('mouseup', handleEnd);
+      task.addEventListener('mouseleave', handleEnd);
+
+      function handleStart(e) {
+        isDragging = true;
+        startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        task.classList.add('dragging');
+      }
+
+      function handleMove(e) {
+        if (!isDragging) return;
+        const x = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+        currentX = x - startX;
+        if (Math.abs(currentX) > 10 && e.type.includes('touch')) e.preventDefault();
+        
+        task.style.transform = `translateX(${currentX}px)`;
+        if (currentX > 0) task.style.backgroundColor = `rgba(40, 167, 69, ${Math.min(currentX / 100, 0.2)})`;
+        else if (currentX < 0) task.style.backgroundColor = `rgba(220, 53, 69, ${Math.min(Math.abs(currentX) / 100, 0.2)})`;
+      }
+
+      function handleEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        task.classList.remove('dragging');
+        const threshold = task.offsetWidth * THRESHOLD_PERCENT;
+        const currentState = task.getAttribute('data-state');
+
+        if (currentX > threshold && currentState === 'pending') {
+          task.setAttribute('data-state', 'completed');
+          if (navigator.vibrate) navigator.vibrate(30);
+        } else if (currentX < -threshold && currentState === 'completed') {
+          task.setAttribute('data-state', 'pending');
+          if (navigator.vibrate) navigator.vibrate(30);
+        }
+        
+        task.style.transform = 'translateX(0)';
+        task.style.backgroundColor = '';
+        currentX = 0;
+      }
+    });
+  }
+  document.addEventListener('DOMContentLoaded', initSwipeTasks);
 </script>
 
 </body>
 </html>
-
